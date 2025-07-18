@@ -1,0 +1,14 @@
+# xr_bones.yaml
+
+train: /YOLODataSet/images/train
+val: /YOLODataSet/images/val
+
+# Number of classes
+nc: 10
+
+# Class names 
+# Class names
+names: ['XR_ELBOW_positive', 'XR_FINGER_positive', 'XR_FOREARM_positive', 
+        'XR_HAND_positive', 'XR_SHOULDER_positive', 
+        'XR_ELBOW_negative', 'XR_FINGER_negative', 'XR_FOREARM_negative', 
+        'XR_HAND_negative', 'XR_SHOULDER_negative']

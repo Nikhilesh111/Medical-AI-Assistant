@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical AI Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results-section {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .result-item {
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .ai-insight {
+            color: #28a745;
+            font-style: italic;
+        }
+        .disclaimer {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .processed-image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .processed-image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Medical AI Assistant</h1>
+        <p>Upload an X-ray image and/or enter a query to get medical insights.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <label for="image_file">Upload Medical Image (X-ray, etc.):</label>
+            <input type="file" id="image_file" name="image_file" accept="image/*">
+
+            <label for="query">Your Medical Query (e.g., "broken arm", "symptoms of flu"):</label>
+            <input type="text" id="query" name="query" placeholder="Enter your query here...">
+
+            <label for="kmeans_input">Patient Data for Clustering (e.g., age,temp,pain_level,fatigue_score):</label>
+            <input type="text" id="kmeans_input" name="kmeans_input" placeholder="e.g., 30,99.5,7,8">
+
+            <button type="submit">Analyze & Get Insights</button>
+        </form>
+
+        {% if image_analysis_results or results or generated_text_results or kmeans_cluster_result %}
+            <h2>Analysis Results:</h2>
+
+            {% if image_analysis_results %}
+                <div class="results-section">
+                    <h3>Image Analysis:</h3>
+                    <p>{{ image_analysis_results | safe }}</p>
+                    {% if processed_image_url %}
+                        <div class="processed-image-container">
+                            <h4>Detected Fractures:</h4>
+                            <img src="{{ processed_image_url }}" alt="Processed Image with Detections">
+                            <p><em>Red boxes indicate detected fractures.</em></p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if results %}
+                <div class="results-section">
+                    <h3>Knowledge Base Matches:</h3>
+                    {% for result, score in results %}
+                        <p class="result-item">{{ result }} (Score: {{ "%.2f"|format(score) }})</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if generated_text_results %}
+                <div class="results-section">
+                    <h3>AI Generated Insights:</h3>
+                    {% for text, type in generated_text_results %}
+                        <p class="result-item {% if type == 'AI Generated Insight' %}ai-insight{% endif %}">{{ text }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if kmeans_cluster_result %}
+                <div class="results-section">
+                    <h3>Patient Cluster Analysis:</h3>
+                    <p>{{ kmeans_cluster_result }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="disclaimer">
+            <h3>Disclaimer:</h3>
+            <p>This Medical AI Assistant is an experimental tool for informational and demonstration purposes only. It is not intended to provide medical advice, diagnosis, or treatment. Always consult with a qualified healthcare professional for any medical concerns or before making any decisions related to your health or treatment. The results generated by this AI may contain inaccuracies or be incomplete.</p>
+        </div>
+    </div>
+</body>
+</html>
