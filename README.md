@@ -1,4 +1,13 @@
 # Medical-AI-Assistant
+ ## Contributors
+
+A big thanks to everyone who has contributed to the Medical-AI-Assistant project!
+
+- Nikhilesh Patil
+- Yeshas Narasimha Murthy 
+- Yashwanth Muthu 
+- Ashok Mehatha Suhas 
+
  Medical AI Assistant for Fracture Detection using YOLOv8, GPT-2, K-Means, and Logistic Regression. Built with Flask, Transformers, FAISS, and trained on medical X-ray datasets from Kaggle. 
  
 Project Title: Medical AI Assistant 
